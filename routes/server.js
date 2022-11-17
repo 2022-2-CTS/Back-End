@@ -2,6 +2,9 @@ const express = require('express');
 const app = express();
 app.use(express.urlencoded({ extended: true }));
 
+const bodyParser = require("body-parser");
+const cors = require("cors");
+
 // MongoDB 연결
 const MongoClient = require('mongodb').MongoClient;
 
@@ -23,14 +26,19 @@ MongoClient.connect(URL, function (error, client) {
 
     // post 라는 컬렉션(파일)에 데이터를 저장할게요!
     // 데이터 -> object 자료형으로 저장해야함
-    db.collection('post').insertOne({name: "Miseon", age: 20}, function(error, result){
+    // 예제
+    db.collection('post').insertOne({ name: "Miseon", age: 20 }, function (error, result) {
         console.log('저장 완료');
     });
-    
+
 
     // 8080 port에 서버를 띄우자!
-    app.listen(8080, function () {
+    app.listen(3000, function () {
         // 서버가 열렸을 때 할 일
-        console.log('listening on 8080');
+        console.log('listening on 3000');
     });
+});
+
+app.get("/api/test", function(req, res) {
+    res.send("Hello");
 });
