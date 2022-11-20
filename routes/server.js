@@ -1,10 +1,19 @@
 const express = require('express');
 const app = express();
 app.use(express.urlencoded({ extended: true }));
+var bodyParser = require('body-parser')
 
-const bodyParser = require("body-parser");
+
+app.use(bodyParser.json())
+
 const cors = require("cors");
+const { application } = require('express');
 
+const registers = [
+    {}
+]
+
+const options = {useUnifiedTopology: true}; 
 // MongoDB 연결
 const MongoClient = require('mongodb').MongoClient;
 
@@ -27,9 +36,9 @@ MongoClient.connect(URL, function (error, client) {
     // post 라는 컬렉션(파일)에 데이터를 저장할게요!
     // 데이터 -> object 자료형으로 저장해야함
     // 예제
-    db.collection('post').insertOne({ name: "Miseon", age: 20 }, function (error, result) {
-        console.log('저장 완료');
-    });
+    // db.collection('post').insertOne({ name: "Miseon", age: 20 }, function (error, result) {
+    //     console.log('저장 완료');
+    // });
 
 
     // 8080 port에 서버를 띄우자!
@@ -42,3 +51,34 @@ MongoClient.connect(URL, function (error, client) {
 app.get("/api/test", function(req, res) {
     res.send("Hello");
 });
+
+app.get("/api/register", function(req, res){
+    res.send({
+        mid:3,
+        memberName:"이지호"
+    });
+});
+
+app.post("/api/register", function(req, res){
+    
+    const Rid = req.body.Rid;
+    const Rpw = req.body.Rpw;
+    const Rphone = req.body.Rphone;
+    console.log(Rid, Rpw, Rphone);
+    db.collection('user').insertOne({id : Rid, pw : Rpw, phone : Rphone}, () => {
+        console.log('저장완료')
+    })
+})
+
+
+app.post("/api/check", function(req, res){
+    const Rid = req.body.Rid;
+    console.log(Rid);
+    db.collection('user').find({}, {_id:false, id:true, pw:false, phone:false}).toArray(function(err, result){
+        if(err){
+            throw err;
+        }
+        console.log(result)
+        res.send(result);
+    })
+})
