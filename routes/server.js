@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 app.use(express.urlencoded({ extended: true }));
 var bodyParser = require('body-parser')
+var router = express.Router();
 
 
 app.use(bodyParser.json())
@@ -25,6 +26,12 @@ var URL = 'mongodb+srv://admin:cts1234@cts.1xmwczv.mongodb.net/?retryWrites=true
 // 어떤 데이터베이스에 저장할 것인가?
 var db;
 
+    // 8080 port에 서버를 띄우자!
+    app.listen(3031, function () {
+        // 서버가 열렸을 때 할 일
+        console.log('listening on 3000');
+    });
+
 // error : 에러 발생 시, 어떤 에러인지 알려줌
 MongoClient.connect(URL, function (error, client) {
     // error 출력
@@ -41,11 +48,7 @@ MongoClient.connect(URL, function (error, client) {
     // });
 
 
-    // 8080 port에 서버를 띄우자!
-    app.listen(3000, function () {
-        // 서버가 열렸을 때 할 일
-        console.log('listening on 3000');
-    });
+
 });
 
 app.get("/api/test", function(req, res) {
@@ -81,4 +84,6 @@ app.post("/api/check", function(req, res){
         console.log(result)
         res.send(result);
     })
-})
+});
+
+module.exports = router;
