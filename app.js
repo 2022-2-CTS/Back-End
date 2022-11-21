@@ -8,6 +8,7 @@ var usersRouter = require('./routes/users');
 
 var serverRouter = require('./routes/server');
 var apiRouter = require('./routes/api');
+var imageCrawlRouter = require('./routes/imageCrawl');
 
 var app = express();
 
@@ -27,6 +28,9 @@ app.use('/api/check', serverRouter);
 app.use('/api/test', serverRouter);
 
 // api.js 내 API
+
+
+// imageCrawl.js 내 API
 
 
 module.exports = app;
