@@ -106,18 +106,14 @@ app.post('/api/account', (req, res) => {
         }
         //console.log(result)
         const members = result;
-        // const onlyIdMatch = members.find(m => m.id === loginId && m.pw != loginPw);
-        // const onlyPwMatch = members.find(m => m.id != loginId && m.pw === loginPw);
+        const onlyIdMatch = members.find(m => m.id === loginId && m.pw != loginPw);
         const member = members.find(m => m.id === loginId && m.pw === loginPw);
         console.log(member)
 
-        // if(onlyIdMatch){
-        //     res.send("only id match");
-        // }
-        // else if(onlyPwMatch){
-        //     res.send("only pw match");
-        // }
-        if (member) {
+        if(onlyIdMatch){
+            res.send("only id match");
+        }
+        else if (member) {
             const options = {
                 domain: "localhost",
                 path: "/",
