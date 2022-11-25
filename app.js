@@ -9,6 +9,7 @@ var usersRouter = require('./routes/users');
 var serverRouter = require('./routes/server');
 var apiRouter = require('./routes/api');
 var imageCrawlRouter = require('./routes/imageCrawl');
+var postRouter = require('./routes/post');
 
 var app = express();
 
@@ -31,6 +32,6 @@ app.use('/api/test', serverRouter);
 
 
 // imageCrawl.js 내 API
-
+app.use("/api/post-push", postRouter);
 
 module.exports = app;

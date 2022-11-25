@@ -7,7 +7,7 @@ const puppeteer = require('puppeteer');
 
 var test_URL = 'http://busandabom.net/play/view.nm?lang=ko&url=play&menuCd=8&res_no=2020030014'
 
-
+ 
 
 async function image_crawl() {
     const browser = await puppeteer.launch({ headless: false });
@@ -27,6 +27,7 @@ async function image_crawl() {
     
     var result_image = $('#subcontent > div > div.top.boxing > div.leftbox.img.relative > img');
 
+    // 이미지 링크 뽑아내기
     console.log(result_image['0']['attribs']['src']);
 }
 
