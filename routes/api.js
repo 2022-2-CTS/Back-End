@@ -20,36 +20,84 @@ const request = require('request');
 var axios = require('axios');
 const { xml } = require('cheerio');
 
+//연극 데이터 10개씩
 var config = {
   method: 'get',
   url: 'http://apis.data.go.kr/6260000/BusanCulturePlayDetailService/getBusanCulturePlayDetail?serviceKey=g4PpueQjaKzayfFQRksvGpJ0jDZ%2BGGmRxzFDMU1o80hY8ObYPgFLuyZDB8iKnGoMh5PSeVLp2tp1lToKexwCjQ%3D%3D',
-  headers: { }
+  headers: {}
 };
-
 axios(config)
-.then(function (response) {
-  var xmlToJson = convert.xml2json(response.data, {compact: true, spaces: 4});
-  //var tmp = xmlToJson[0]
-  xmlToJson = JSON.parse(xmlToJson)
-  console.log(xmlToJson.response.body.items.item[1])
-  const data = {
-    category:'연극',
-    url:xmlToJson.response.body.items.item.dabom_url._text,
-    data:{
-      title:xmlToJson.response.body.items.item.title._text,
-      op_st_dt:xmlToJson.response.body.items.item.op_st_dt._text,
-      op_ed_dt:xmlToJson.response.body.items.item.op_ed_dt._text,
-      showtime:xmlToJson.response.body.items.item.showtime._text,
-      price:xmlToJson.response.body.items.item.price._text
-    }
-  }
-  
-  console.log(data)
+  .then(function (response) {
+    var xmlToJson = convert.xml2json(response.data, { compact: true, spaces: 4 });
+    //var tmp = xmlToJson[0]
+    xmlToJson = JSON.parse(xmlToJson)
 
-})
-.catch(function (error) {
-  console.log(error);
-});
+    // console.log(xmlToJson.response.body.items.item)
+    var list = Number(xmlToJson.response.body.numOfRows._text);
+    const data = [];
+
+    for (var i = 0; i < list; i++) {
+      const tmpData = {
+        category: '연극',
+        url: xmlToJson.response.body.items.item[i].dabom_url._text,
+        data: {
+          title: xmlToJson.response.body.items.item[i].title._text,
+          op_st_dt: xmlToJson.response.body.items.item[i].op_st_dt._text,
+          op_ed_dt: xmlToJson.response.body.items.item[i].op_ed_dt._text,
+          showtime: xmlToJson.response.body.items.item[i].showtime._text,
+          price: xmlToJson.response.body.items.item[i].price._text
+        }
+      }
+      data.push(tmpData);
+    }
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
+
+
+  // 콘서트
+  var axios = require('axios');
+
+  var config = {
+    method: 'get',
+    url: 'http://apis.data.go.kr/6260000/BusanCultureConcertDetailService/getBusanCultureConcertDetail?_wadl=json&serviceKey=\t\ng4PpueQjaKzayfFQRksvGpJ0jDZ+GGmRxzFDMU1o80hY8ObYPgFLuyZDB8iKnGoMh5PSeVLp2tp1lToKexwCjQ==',
+    headers: { }
+  };
+  
+  axios(config)
+  .then(function (response) {
+    var xmlToJson = convert.xml2json(response.data, { compact: true, spaces: 4 });
+    //var tmp = xmlToJson[0]
+    xmlToJson = JSON.parse(xmlToJson)
+    var list = xmlToJson.response.body.numOfRows._text;
+    const data = [];
+    console.log(list)
+    for (var i = 0; i < list; i++) {
+      const tmpData = {
+        category: '콘서트',
+        url: xmlToJson.response.body.items.item[i].dabom_url._text,
+        data: {
+          title: xmlToJson.response.body.items.item[i].title._text,
+          op_st_dt: xmlToJson.response.body.items.item[i].op_st_dt._text,
+          op_ed_dt: xmlToJson.response.body.items.item[i].op_ed_dt._text,
+          showtime: xmlToJson.response.body.items.item[i].showtime._text,
+          price: xmlToJson.response.body.items.item[i].price._text
+        }
+      }
+      data.push(tmpData);
+    }
+    console.log(data)
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
+
+
+  // 뮤지컬
+  
+
+  // 공연전시
 
 
 
@@ -64,16 +112,16 @@ var db;
 
 // 8080 port에 서버를 띄우자!
 app.listen(3000, function () {
-    // 서버가 열렸을 때 할 일
-    console.log('listening on 3000');
+  // 서버가 열렸을 때 할 일
+  console.log('listening on 3000');
 });
 
 // error : 에러 발생 시, 어떤 에러인지 알려줌
 MongoClient.connect(URL, function (error, client) {
-    // error 출력
-    if (error) return console.log(error);
-    // BusanCultureMap 이라는 데이터베이스(폴더)에 접근할게요!
-    db = client.db('BusanCultureMap');
+  // error 출력
+  if (error) return console.log(error);
+  // BusanCultureMap 이라는 데이터베이스(폴더)에 접근할게요!
+  db = client.db('BusanCultureMap');
 });
 
 console.log("api");
