@@ -115,7 +115,7 @@ app.post('/api/account', (req, res) => {
         }
         else if (member) {
             const options = {
-                domain: "localhost",
+                domain: "192.168.45.210",
                 path: "/",
                 httpOnly: true,
             }
