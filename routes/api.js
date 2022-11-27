@@ -17,9 +17,12 @@ const convert = require('xml-js');
 const request = require('request');
 //부산 공공 데이터 포털
 //연극
+const Playdata = [];
+const Concertdata = [];
+const Musicaldata = [];
+const Exhibitdata = [];
 var axios = require('axios');
 const { xml } = require('cheerio');
-
 const key='g4PpueQjaKzayfFQRksvGpJ0jDZ%2BGGmRxzFDMU1o80hY8ObYPgFLuyZDB8iKnGoMh5PSeVLp2tp1lToKexwCjQ%3D%3D'
 
 //연극 데이터 10개씩
@@ -35,7 +38,6 @@ axios(config)
     xmlToJson = JSON.parse(xmlToJson)
 
     var list = Number(xmlToJson.response.body.numOfRows._text);
-    const Playdata = [];
 
     for (var i = 0; i < list; i++) {
       const tmpData = {
@@ -69,7 +71,6 @@ axios(config)
     xmlToJson = JSON.parse(xmlToJson)
 
     var list = Number(xmlToJson.response.body.numOfRows._text);
-    const Concertdata = [];
 
     for (var i = 0; i < list; i++) {
       const tmpData = {
@@ -104,7 +105,6 @@ axios(config)
     xmlToJson = JSON.parse(xmlToJson)
 
     var list = Number(xmlToJson.response.body.numOfRows._text);
-    const Musicaldata = [];
 
     for (var i = 0; i < list; i++) {
       const tmpData = {
@@ -138,7 +138,6 @@ axios(config)
     //var tmp = xmlToJson[0]
     xmlToJson = JSON.parse(xmlToJson)
     var list = Number(xmlToJson.response.body.numOfRows._text);
-    const Exhibitdata = [];
     for (var i = 0; i < list; i++) {
       const tmpData = {
         category: '전시',
@@ -151,14 +150,11 @@ axios(config)
         }
       }
       Exhibitdata.push(tmpData);
-      console.log(Exhibitdata)
     }
   })
   .catch(function (error) {
     console.log(error);
   });
-
-
 
 // DB connection URL
 // admin, cts1234
@@ -172,6 +168,18 @@ var db;
 app.listen(3000, function () {
   // 서버가 열렸을 때 할 일
   console.log('listening on 3000');
+  app.get('/get/play',function(get,post){
+    post.send(Playdata);
+  });
+  app.get('/get/concert',function(get,post){
+    post.send(Concertdata);
+  });
+  app.get('/get/musical',function(get,post){
+    post.send(Musicaldata);
+  });
+  app.get('/get/exhibit',function(get,post){
+    post.send(Exhibitdata);
+  });
 });
 
 // error : 에러 발생 시, 어떤 에러인지 알려줌
