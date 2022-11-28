@@ -165,7 +165,7 @@ var URL = 'mongodb+srv://admin:cts1234@cts.1xmwczv.mongodb.net/?retryWrites=true
 var db;
 
 // 8080 port에 서버를 띄우자!
-app.listen(8080, function () {
+app.listen(3000, function () {
   // 서버가 열렸을 때 할 일
 
 });
