@@ -10,7 +10,7 @@ var test_URL = 'http://busandabom.net/play/view.nm?lang=ko&url=play&menuCd=8&res
  
 
 async function image_crawl() {
-    const browser = await puppeteer.launch({ headless: false });
+    const browser = await puppeteer.launch({ headless: true });
     const page = await browser.newPage();
     await page.setDefaultNavigationTimeout(0);
 

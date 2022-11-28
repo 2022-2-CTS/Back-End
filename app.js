@@ -22,16 +22,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
-// server.js 내 API
-app.use('/api/test', serverRouter);
-app.use('/api/register', serverRouter);
-app.use('/api/check', serverRouter);
-app.use('/api/test', serverRouter);
 
-// api.js 내 API
-
-
-// imageCrawl.js 내 API
-app.use("/api/post-push", postRouter);
+app.use('/api', serverRouter); // 회원가입, 로그인
+app.use("/api/board", postRouter); // info 작성
 
 module.exports = app;

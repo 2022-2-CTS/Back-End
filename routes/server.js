@@ -28,12 +28,6 @@ var URL = 'mongodb+srv://admin:cts1234@cts.1xmwczv.mongodb.net/?retryWrites=true
 // 어떤 데이터베이스에 저장할 것인가?
 var db;
 
-// 8080 port에 서버를 띄우자!
-app.listen(3000, function () {
-    // 서버가 열렸을 때 할 일
-    console.log('listening on 3000');
-});
-
 // error : 에러 발생 시, 어떤 에러인지 알려줌
 MongoClient.connect(URL, function (error, client) {
     // error 출력
@@ -53,7 +47,7 @@ MongoClient.connect(URL, function (error, client) {
 
 });
 
-app.post("/api/register", function (req, res) {
+router.post("/register", function (req, res) {
 
     const Rid = req.body.Rid;
     const Rpw = req.body.Rpw;
@@ -65,7 +59,7 @@ app.post("/api/register", function (req, res) {
 })
 
 
-app.post("/api/check", function (req, res) {
+router.post("/check", function (req, res) {
     const Rid = req.body.Rid;
     console.log(Rid);
     db.collection('user').find({}, { _id: false, id: true, pw: false, phone: false }).toArray(function (err, result) {
@@ -78,7 +72,7 @@ app.post("/api/check", function (req, res) {
 });
 
 
-app.get('/api/account', function (req, res) {
+router.get('/account', function (req, res) {
     console.log(req.cookies)
     if (req.cookies && req.cookies.token) {
         jwt.verify(req.cookies.token, "abc12345678", (err, decoded) => {
@@ -93,7 +87,7 @@ app.get('/api/account', function (req, res) {
     }
 })
 
-app.post('/api/account', (req, res) => {
+router.post('/account', (req, res) => {
     const loginId = req.body.lId;
     const loginPw = req.body.lPw;
 
@@ -115,7 +109,7 @@ app.post('/api/account', (req, res) => {
         }
         else if (member) {
             const options = {
-                domain: "192.168.45.210",
+                domain: "localhost",
                 path: "/",
                 httpOnly: true,
             }

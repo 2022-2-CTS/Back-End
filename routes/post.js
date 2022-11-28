@@ -33,23 +33,10 @@ MongoClient.connect(URL, function (error, client) {
 
     // BusanCultureMap 이라는 데이터베이스(폴더)에 접근할게요!
     db = client.db('BusanCultureMap');
-
-    // post 라는 컬렉션(파일)에 데이터를 저장할게요!
-    // 데이터 -> object 자료형으로 저장해야함
-    // 예제
-    // db.collection('post').insertOne({ name: "Miseon", age: 20 }, function (error, result) {
-    //     console.log('저장 완료');
-    // });
-
-    app.listen(3000, function () {
-        // 서버가 열렸을 때 할 일
-        console.log('listening on 3000');
-    });
-
 });
 
 // 제목, 태그(0~3), 내용을 post collention에 저장함
-app.post("/api/post-push", function (req, res) {
+router.post("/upload", function (req, res) {
     var tmpTitle = req.body.title;
     var tmpTag = req.body.tag;
     var tmpContent = req.body.content;
@@ -61,7 +48,7 @@ app.post("/api/post-push", function (req, res) {
 })
 
 
-app.get("/api/post-get", function(req, res) {
+router.get("/", function(req, res) {
     // 모든 데이터 꺼내기
     db.collection('post').find().toArray(function (error, result) {
         // DB에서 데이터를 받아온 후, 'list.ejs' 파일 렌더링
@@ -69,5 +56,6 @@ app.get("/api/post-get", function(req, res) {
         res.send(result)
     });
 })
+
 
 module.exports = router;

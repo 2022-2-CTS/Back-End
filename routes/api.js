@@ -164,12 +164,6 @@ var URL = 'mongodb+srv://admin:cts1234@cts.1xmwczv.mongodb.net/?retryWrites=true
 // 어떤 데이터베이스에 저장할 것인가?
 var db;
 
-// 8080 port에 서버를 띄우자!
-app.listen(3000, function () {
-  // 서버가 열렸을 때 할 일
-
-});
-
 app.get('/get/play',function(get,res){
   res.send(Playdata);
   // console.log(Playdata)
