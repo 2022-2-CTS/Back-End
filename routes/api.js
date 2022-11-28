@@ -165,21 +165,23 @@ var URL = 'mongodb+srv://admin:cts1234@cts.1xmwczv.mongodb.net/?retryWrites=true
 var db;
 
 // 8080 port에 서버를 띄우자!
-app.listen(3000, function () {
+app.listen(8080, function () {
   // 서버가 열렸을 때 할 일
-  console.log('listening on 3000');
-  app.get('/get/play',function(get,post){
-    post.send(Playdata);
-  });
-  app.get('/get/concert',function(get,post){
-    post.send(Concertdata);
-  });
-  app.get('/get/musical',function(get,post){
-    post.send(Musicaldata);
-  });
-  app.get('/get/exhibit',function(get,post){
-    post.send(Exhibitdata);
-  });
+
+});
+
+app.get('/get/play',function(get,res){
+  res.send(Playdata);
+  // console.log(Playdata)
+});
+app.get('/get/concert',function(get,res){
+  res.send(Concertdata);
+});
+app.get('/get/musical',function(get,res){
+  res.send(Musicaldata);
+});
+app.get('/get/exhibit',function(get,res){
+  res.send(Exhibitdata);
 });
 
 // error : 에러 발생 시, 어떤 에러인지 알려줌
