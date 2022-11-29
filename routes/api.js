@@ -164,17 +164,17 @@ var URL = 'mongodb+srv://admin:cts1234@cts.1xmwczv.mongodb.net/?retryWrites=true
 // 어떤 데이터베이스에 저장할 것인가?
 var db;
 
-app.get('/get/play',function(get,res){
+router.get('/play',function(get,res){
   res.send(Playdata);
   // console.log(Playdata)
 });
-app.get('/get/concert',function(get,res){
+router.get('/concert',function(get,res){
   res.send(Concertdata);
 });
-app.get('/get/musical',function(get,res){
+router.get('/musical',function(get,res){
   res.send(Musicaldata);
 });
-app.get('/get/exhibit',function(get,res){
+router.get('/exhibit',function(get,res){
   res.send(Exhibitdata);
 });
 

@@ -22,8 +22,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
-
 app.use('/api', serverRouter); // 회원가입, 로그인
-app.use("/api/board", postRouter); // info 작성
+app.use('/api/board', postRouter); // info 작성
+app.use('/api/data', apiRouter); // 공공데이터포털 api 호출
 
 module.exports = app;
