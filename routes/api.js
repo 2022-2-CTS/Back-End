@@ -25,6 +25,7 @@ var axios = require('axios');
 const { xml } = require('cheerio');
 const key='g4PpueQjaKzayfFQRksvGpJ0jDZ%2BGGmRxzFDMU1o80hY8ObYPgFLuyZDB8iKnGoMh5PSeVLp2tp1lToKexwCjQ%3D%3D'
 var list;
+//연극 데이터
 //total받기
 async function gettotal(){
   console.log("gettotal")
@@ -43,7 +44,6 @@ async function gettotal(){
   getset()
 })
 }
-
 //total 갯수만큼 받아오기
 async function getset(){
   await console.log("getset")
@@ -76,44 +76,7 @@ async function getset(){
   })
 
 }
-// async function all(){
-//   await gettotal()
-//   await getset()
-//   return new Promise()
-// }
 gettotal()
-//연극 데이터 10개씩
-// var config = {
-//   method: 'get',
-//   url: 'http://apis.data.go.kr/6260000/BusanCulturePlayDetailService/getBusanCulturePlayDetail?serviceKey='+key+'&numOfRows=500',
-//   headers: {}
-// };
-// axios(config)
-//   .then(function (response) {
-//     var xmlToJson = convert.xml2json(response.data, { compact: true, spaces: 4 });
-//     //var tmp = xmlToJson[0]
-//     xmlToJson = JSON.parse(xmlToJson)
-
-//     var list = Number(xmlToJson.response.body.numOfRows._text);
-
-//     for (var i = 0; i < list; i++) {
-//       const tmpData = {
-//         category: '연극',
-//         url: xmlToJson.response.body.items.item[i].dabom_url._text,
-//         data: {
-//           title: xmlToJson.response.body.items.item[i].title._text,
-//           op_st_dt: xmlToJson.response.body.items.item[i].op_st_dt._text,
-//           op_ed_dt: xmlToJson.response.body.items.item[i].op_ed_dt._text,
-//           showtime: xmlToJson.response.body.items.item[i].showtime._text,
-//           price: xmlToJson.response.body.items.item[i].price._text
-//         }
-//       }
-//       Playdata.push(tmpData);
-//     }
-//   })
-//   .catch(function (error) {
-//     console.log(error);
-//   });
 
   // // 콘서트
   // var config = {
