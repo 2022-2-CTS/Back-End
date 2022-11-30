@@ -34,12 +34,13 @@ async function gettotal(){
     headers: {}
   };
   axios(config)
-  .then(function (response) {
+  .then(await function (response) {
     var xmlToJson = convert.xml2json(response.data, { compact: true, spaces: 4 });
     //var tmp = xmlToJson[0]
     xmlToJson = JSON.parse(xmlToJson)
     list = Number(xmlToJson.response.body.totalCount._text);
-    console.log(list,"토탈")
+}).then(await function(){
+  getset()
 })
 }
 
@@ -75,11 +76,12 @@ async function getset(){
   })
 
 }
-async function all(){
-  await gettotal()
-  await getset()
-}
-all()
+// async function all(){
+//   await gettotal()
+//   await getset()
+//   return new Promise()
+// }
+gettotal()
 //연극 데이터 10개씩
 // var config = {
 //   method: 'get',
