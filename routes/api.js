@@ -24,10 +24,13 @@ const Exhibitdata = [];
 var axios = require('axios');
 const { xml } = require('cheerio');
 const key='g4PpueQjaKzayfFQRksvGpJ0jDZ%2BGGmRxzFDMU1o80hY8ObYPgFLuyZDB8iKnGoMh5PSeVLp2tp1lToKexwCjQ%3D%3D'
-var list;
+var listP;
+var listC;
+var listM;
+var listE;
 //연극 데이터
 //total받기
-async function gettotal(){
+async function getPlay(){
   console.log("gettotal")
   var config = {
     method: 'get',
@@ -37,20 +40,17 @@ async function gettotal(){
   axios(config)
   .then(await function (response) {
     var xmlToJson = convert.xml2json(response.data, { compact: true, spaces: 4 });
-    //var tmp = xmlToJson[0]
     xmlToJson = JSON.parse(xmlToJson)
-    list = Number(xmlToJson.response.body.totalCount._text);
+    listP = Number(xmlToJson.response.body.totalCount._text);
 }).then(await function(){
-  getset()
+  getplaydata()
 })
 }
-//total 갯수만큼 받아오기
-async function getset(){
+async function getplaydata(){
   await console.log("getset")
-  await console.log(list)
   var config = {
     method: 'get',
-    url: 'http://apis.data.go.kr/6260000/BusanCulturePlayDetailService/getBusanCulturePlayDetail?serviceKey='+key+'&numOfRows='+list,
+    url: 'http://apis.data.go.kr/6260000/BusanCulturePlayDetailService/getBusanCulturePlayDetail?serviceKey='+key+'&numOfRows='+listP,
     headers: {}
   };
   axios(config)
@@ -58,7 +58,7 @@ async function getset(){
     var xmlToJson = convert.xml2json(response.data, { compact: true, spaces: 4 });
     //var tmp = xmlToJson[0]
     xmlToJson = JSON.parse(xmlToJson)
-    for (var i = 0; i < list; i++) {
+    for (var i = 0; i < listP; i++) {
       const tmpData = {
         category: '연극',
         url: xmlToJson.response.body.items.item[i].dabom_url._text,
@@ -76,105 +76,106 @@ async function getset(){
   })
 
 }
-gettotal()
+// getPlay()
 
-  // // 콘서트
-  // var config = {
-  //   method: 'get',
-  //   url: 'http://apis.data.go.kr/6260000/BusanCultureConcertDetailService/getBusanCultureConcertDetail?_wadl=json&serviceKey='+key,
-  //   headers: { }
-  // };
-  // axios(config)
-  // .then(function (response) {
-  //   var xmlToJson = convert.xml2json(response.data, { compact: true, spaces: 4 });
-  //   //var tmp = xmlToJson[0]
-  //   xmlToJson = JSON.parse(xmlToJson)
+//콘서트
+async function getConcert(){
+  console.log("gettotal")
+  var config = {
+    method: 'get',
+    url: 'http://apis.data.go.kr/6260000/BusanCultureConcertDetailService/getBusanCultureConcertDetail?serviceKey='+key,
+    headers: {}
+  };
+  axios(config)
+  .then(await function (response) {
+    var xmlToJson = convert.xml2json(response.data, { compact: true, spaces: 4 });
+    xmlToJson = JSON.parse(xmlToJson)
+    listC = Number(xmlToJson.response.body.totalCount._text);
+}).then(await function(){
+  getConcertdata()
+})
+}
+async function getConcertdata(){
+  var config = {
+    method: 'get',
+    url: 'http://apis.data.go.kr/6260000/BusanCultureConcertDetailService/getBusanCultureConcertDetail?serviceKey='+key+'&numOfRows='+listC,
+    headers: {}
+  };
+  axios(config)
+  .then( await function (response) {
+    var xmlToJson = convert.xml2json(response.data, { compact: true, spaces: 4 });
+    //var tmp = xmlToJson[0]
+    xmlToJson = JSON.parse(xmlToJson)
+    for (var i = 0; i < listC; i++) {
+      const tmpData = {
+        category: '콘서트',
+        url: xmlToJson.response.body.items.item[i].dabom_url._text,
+        data: {
+          title: xmlToJson.response.body.items.item[i].title._text,
+          op_st_dt: xmlToJson.response.body.items.item[i].op_st_dt._text,
+          op_ed_dt: xmlToJson.response.body.items.item[i].op_ed_dt._text,
+          showtime: xmlToJson.response.body.items.item[i].showtime._text,
+          price: xmlToJson.response.body.items.item[i].price._text
+        }
+      }
+      Concertdata.push(tmpData);
+    }
+    console.log(Concertdata,"데이터")
+  })
 
-  //   var list = Number(xmlToJson.response.body.numOfRows._text);
+}
+// getConcert()
+  
+async function getExhibit(){
+  console.log("gettotal")
+  var config = {
+    method: 'get',
+    url: 'http://apis.data.go.kr/6260000/BusanCultureExhibitDetailService/getBusanCultureExhibitDetail?serviceKey='+key,
+    headers: {}
+  };
+  axios(config)
+  .then(await function (response) {
+    var xmlToJson = convert.xml2json(response.data, { compact: true, spaces: 4 });
+    xmlToJson = JSON.parse(xmlToJson)
+    listE = Number(xmlToJson.response.body.totalCount._text);
+}).then(await function(){
+  getExhibitdata()
+})
+}
+async function getExhibitdata(){
+  var config = {
+    method: 'get',
+    url: 'http://apis.data.go.kr/6260000/BusanCultureExhibitDetailService/getBusanCultureExhibitDetail?serviceKey='+key+'&numOfRows='+listE,
+    headers: {}
+  };
+  axios(config)
+  .then( await function (response) {
+    var xmlToJson = convert.xml2json(response.data, { compact: true, spaces: 4 });
+    //var tmp = xmlToJson[0]
+    xmlToJson = JSON.parse(xmlToJson)
+    for (var i = 0; i < listE; i++) {
+      const tmpData = {
+        category: '전시',
+        url: xmlToJson.response.body.items.item[i].dabom_url._text,
+        data: {
+          title: xmlToJson.response.body.items.item[i].title._text,
+          op_st_dt: xmlToJson.response.body.items.item[i].op_st_dt._text,
+          op_ed_dt: xmlToJson.response.body.items.item[i].op_ed_dt._text,
+          showtime: xmlToJson.response.body.items.item[i].showtime._text,
+          price: xmlToJson.response.body.items.item[i].price._text
+        }
+      }
+      Exhibitdata.push(tmpData);
+    }
+    console.log(Exhibitdata,"데이터")
+  })
 
-  //   for (var i = 0; i < list; i++) {
-  //     const tmpData = {
-  //       category: '콘서트',
-  //       url: xmlToJson.response.body.items.item[i].dabom_url._text,
-  //       data: {
-  //         title: xmlToJson.response.body.items.item[i].title._text,
-  //         op_st_dt: xmlToJson.response.body.items.item[i].op_st_dt._text,
-  //         op_ed_dt: xmlToJson.response.body.items.item[i].op_ed_dt._text,
-  //         showtime: xmlToJson.response.body.items.item[i].showtime._text,
-  //         price: xmlToJson.response.body.items.item[i].price._text
-  //       }
-  //     }
-  //     Concertdata.push(tmpData);
-  //   }
-  // })
-  // .catch(function (error) {
-  //   console.log(error);
-  // });
+}
+getExhibit()
+
+
   
 
-  // // 뮤지컬
-  // var config = {
-  //   method: 'get',
-  //   url: 'http://apis.data.go.kr/6260000/BusanCultureMusicalDetailService/getBusanCultureMusicalDetail?_wadl=json&serviceKey='+key,
-  //   headers: { }
-  // };
-  // axios(config)
-  // .then(function (response) {
-  //   var xmlToJson = convert.xml2json(response.data, { compact: true, spaces: 4 });
-  //   //var tmp = xmlToJson[0]
-  //   xmlToJson = JSON.parse(xmlToJson)
-
-  //   var list = Number(xmlToJson.response.body.numOfRows._text);
-
-  //   for (var i = 0; i < list; i++) {
-  //     const tmpData = {
-  //       category: '뮤지컬',
-  //       url: xmlToJson.response.body.items.item[i].dabom_url._text,
-  //       data: {
-  //         title: xmlToJson.response.body.items.item[i].title._text,
-  //         op_st_dt: xmlToJson.response.body.items.item[i].op_st_dt._text,
-  //         op_ed_dt: xmlToJson.response.body.items.item[i].op_ed_dt._text,
-  //         showtime: xmlToJson.response.body.items.item[i].showtime._text,
-  //         price: xmlToJson.response.body.items.item[i].price._text
-  //       }
-  //     }
-  //     Musicaldata.push(tmpData);
-  //   }
-  // })
-  // .catch(function (error) {
-  //   console.log(error);
-  // });
-  
-
-  // // 전시
-  // var config = {
-  //   method: 'get',
-  //   url: 'http://apis.data.go.kr/6260000/BusanCultureExhibitDetailService/getBusanCultureExhibitDetail?_wadl=json&serviceKey='+key,
-  //   headers: { }
-  // };
-  // axios(config)
-  // .then(function (response) {
-  //   var xmlToJson = convert.xml2json(response.data, { compact: true, spaces: 4 });
-  //   //var tmp = xmlToJson[0]
-  //   xmlToJson = JSON.parse(xmlToJson)
-  //   var list = Number(xmlToJson.response.body.numOfRows._text);
-  //   for (var i = 0; i < list; i++) {
-  //     const tmpData = {
-  //       category: '전시',
-  //       url: xmlToJson.response.body.items.item[i].dabom_url._text,
-  //       data: {
-  //         title: xmlToJson.response.body.items.item[i].title._text,
-  //         op_st_dt: xmlToJson.response.body.items.item[i].op_st_dt._text,
-  //         op_ed_dt: xmlToJson.response.body.items.item[i].op_ed_dt._text,
-  //         price: xmlToJson.response.body.items.item[i].price._text
-  //       }
-  //     }
-  //     Exhibitdata.push(tmpData);
-  //   }
-  // })
-  // .catch(function (error) {
-  //   console.log(error);
-  // });
 
 // DB connection URL
 // admin, cts1234
