@@ -47,7 +47,12 @@ MongoClient.connect(URL, function (error, client) {
 
 });
 
-router.post("/register", function (req, res) {
+app.listen(3000, function () {
+    // 서버가 열렸을 때 할 일
+    console.log('listening on 3000');
+});
+
+app.post("/api/register", function (req, res) {
 
     const Rid = req.body.Rid;
     const Rpw = req.body.Rpw;
@@ -59,7 +64,7 @@ router.post("/register", function (req, res) {
 })
 
 
-router.post("/check", function (req, res) {
+app.post("/api/check", function (req, res) {
     const Rid = req.body.Rid;
     console.log(Rid);
     db.collection('user').find({}, { _id: false, id: true, pw: false, phone: false }).toArray(function (err, result) {
@@ -72,7 +77,7 @@ router.post("/check", function (req, res) {
 });
 
 
-router.get('/account', function (req, res) {
+app.get('/api/account', function (req, res) {
     console.log(req.cookies)
     if (req.cookies && req.cookies.token) {
         jwt.verify(req.cookies.token, "abc12345678", (err, decoded) => {
@@ -87,7 +92,7 @@ router.get('/account', function (req, res) {
     }
 })
 
-router.post('/account', (req, res) => {
+app.post('/api/account', (req, res) => {
     const loginId = req.body.lId;
     const loginPw = req.body.lPw;
 
@@ -128,5 +133,59 @@ router.post('/account', (req, res) => {
 
 })
 
+app.get('/api/account', function (req, res) {
+    console.log(req.cookies)
+    if (req.cookies && req.cookies.token) {
+        jwt.verify(req.cookies.token, "abc12345678", (err, decoded) => {
+            if (!err) {
+                res.send(decoded);
+            } else {
+                return res.send(401);
+            }
+        })
+    } else {
+        res.send(401);
+    }
+})
 
+app.post('/api/chat', function (req, res){
+    const mid = req.body.my_id;
+    console.log(mid);
+    db.collection('chat').find({}).toArray(function (err, result) {
+        if (err) {
+            throw err;
+        }
+        res.send(result);
+    })
+})
+
+app.post('/api/message', function(req, res){
+    var data ={
+        parent: req.body.parent,
+        content: req.body.content,
+        userid: req.body.userid,
+        data: new Date(),
+    }
+    db.collection('message').insertOne(data).then(() => {
+        console.log("성공");
+        res.send("저장 성공");
+    }).catch(() => {
+        res.send("저장 실패");
+    })
+})
+
+app.get('/api/message/:id', function(req, res){
+    res.writeHead(200, {
+        "Connection" : "Keep-alive",
+        "Content-Type" : "text/event-stream",
+        "Cache-Control" : "no-cache",
+    });
+    console.log(req.params.id);
+    db.collection('message').find({parent : req.params.id }).toArray()
+    .then((result) => {
+        res.write("event:test\n");
+        res.write('data: ' + JSON.stringify(result) +'\n\n');
+        console.log(JSON.stringify(result))
+    })
+})
 module.exports = router;
