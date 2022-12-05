@@ -171,54 +171,8 @@ async function getExhibitdata(){
   })
 
 }
-//getExhibit()
+getExhibit()
 
-async function getMusical(){
-  console.log("gettotal")
-  var config = {
-    method: 'get',
-    url: 'http://apis.data.go.kr/6260000/BusanCultureMusicalDetailService/getBusanCultureMusicalDetail?serviceKey='+key,
-    headers: {}
-  };
-  axios(config)
-  .then(await function (response) {
-    var xmlToJson = convert.xml2json(response.data, { compact: true, spaces: 4 });
-    xmlToJson = JSON.parse(xmlToJson)
-    listM = Number(xmlToJson.response.body.totalCount._text);
-}).then(await function(){
-  getMusicaldata()
-})
-}
-async function getMusicaldata(){
-  var config = {
-    method: 'get',
-    url: 'http://apis.data.go.kr/6260000/BusanCultureMusicalDetailService/getBusanCultureMusicalDetail?serviceKey='+key+'&numOfRows='+listM,
-    headers: {}
-  };
-  axios(config)
-  .then( await function (response) {
-    var xmlToJson = convert.xml2json(response.data, { compact: true, spaces: 4 });
-    //var tmp = xmlToJson[0]
-    xmlToJson = JSON.parse(xmlToJson)
-    for (var i = 0; i < listM; i++) {
-      const tmpData = {
-        category: '뮤지컬',
-        url: xmlToJson.response.body.items.item[i].dabom_url._text,
-        data: {
-          title: xmlToJson.response.body.items.item[i].title._text,
-          op_st_dt: xmlToJson.response.body.items.item[i].op_st_dt._text,
-          op_ed_dt: xmlToJson.response.body.items.item[i].op_ed_dt._text,
-          showtime: xmlToJson.response.body.items.item[i].showtime._text,
-          price: xmlToJson.response.body.items.item[i].price._text
-        }
-      }
-      Musicaldata.push(tmpData);
-    }
-    console.log(Musicaldata,"데이터")
-  })
-
-}
-getMusical()
 
   
 
