@@ -65,14 +65,14 @@ async function crawl(tmpUrl, nowData) {
   var result_address = $('#tab2 > div.subcont-bg > div > div.boardBasic.mb_scroll > div > table > tbody > tr > td:nth-child(5)').text();
   tmpData.data.location = result_address;
 
-  console.log("<현재 완성된 데이터>");
-  console.log(tmpData);
+  //console.log("<현재 완성된 데이터>");
+  //console.log(tmpData);
 }
 
 //연극 데이터
 //total받기
 async function getPlay() {
-  console.log("gettotal")
+  //console.log("gettotal")
   var config = {
     method: 'get',
     url: 'http://apis.data.go.kr/6260000/BusanCulturePlayDetailService/getBusanCulturePlayDetail?serviceKey=' + key + '&resultType=json',
@@ -81,7 +81,7 @@ async function getPlay() {
   axios(config)
     .then(await function (response) {
       listP = response.data.getBusanCulturePlayDetail.totalCount;
-      console.log(listP);
+      //console.log(listP);
     }).then(await function () {
       getplaydata()
     })
@@ -100,10 +100,10 @@ async function getplaydata() {
   axios(config)
     .then(await function (response) {
       var xmlToJson = response.data.getBusanCulturePlayDetail;
-      console.log(response);
+      //console.log(response);
       // console.log(listP)
       for (var i = 0; i < listP; i++) {
-        console.log("size: " + Playdata.length)
+        //console.log("size: " + Playdata.length)
         const tmpData = {
           category: '연극',
           url: xmlToJson.item[i].dabom_url,
@@ -118,13 +118,13 @@ async function getplaydata() {
         Playdata.push(tmpData);
         // crawl(tmpData.url, tmpData);
       }
-      console.log(Playdata, "데이터")
+      //console.log(Playdata, "데이터")
     })
 
 }
 
 async function getConcert() {
-  console.log("gettotal")
+  //console.log("gettotal")
   var config = {
     method: 'get',
     url: 'http://apis.data.go.kr/6260000/BusanCultureConcertDetailService/getBusanCultureConcertDetail?serviceKey=' + key + '&resultType=json',
@@ -150,7 +150,7 @@ async function getConcertdata() {
   axios(config)
     .then(await function (response) {
       var xmlToJson = response.data.getBusanCultureConcertDetail;
-      console.log(xmlToJson.item)
+      //console.log(xmlToJson.item)
       for (var i = 0; i < listC; i++) {
         const tmpData = {
           category: '콘서트',
@@ -165,7 +165,7 @@ async function getConcertdata() {
         }
         Concertdata.push(tmpData);
       }
-      console.log(Concertdata, "데이터")
+      //console.log(Concertdata, "데이터")
     })
 }
 
@@ -198,7 +198,7 @@ async function getMusicaldata() {
   axios(config)
     .then(await function (response) {
       var xmlToJson = response.data.getBusanCultureMusicalDetail;
-      console.log(xmlToJson.item)
+      //console.log(xmlToJson.item)
       for (var i = 0; i < listM; i++) {
         const tmpData = {
           category: '뮤지컬',
@@ -213,7 +213,7 @@ async function getMusicaldata() {
         }
         Musicaldata.push(tmpData);
       }
-      console.log(Musicaldata, "데이터")
+      //console.log(Musicaldata, "데이터")
     })
 }
 
@@ -262,8 +262,8 @@ async function getExhibitdata() {
           }
         }
         Exhibitdata.push(tmpData);
-        console.log(i + "번째 데이터 크롤링");
-        crawl(tmpData.url, tmpData);
+        //console.log(i + "번째 데이터 크롤링");
+        //crawl(tmpData.url, tmpData);
       }
       //console.log(Exhibitdata, "데이터")
     })

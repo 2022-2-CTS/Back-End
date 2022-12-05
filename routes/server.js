@@ -47,12 +47,7 @@ MongoClient.connect(URL, function (error, client) {
 
 });
 
-app.listen(3000, function () {
-    // 서버가 열렸을 때 할 일
-    console.log('listening on 3000');
-});
-
-app.post("/api/register", function (req, res) {
+router.post("/register", function (req, res) {
 
     const Rid = req.body.Rid;
     const Rpw = req.body.Rpw;
@@ -64,7 +59,7 @@ app.post("/api/register", function (req, res) {
 })
 
 
-app.post("/api/check", function (req, res) {
+router.post("/check", function (req, res) {
     const Rid = req.body.Rid;
     console.log(Rid);
     db.collection('user').find({}, { _id: false, id: true, pw: false, phone: false }).toArray(function (err, result) {
@@ -77,7 +72,7 @@ app.post("/api/check", function (req, res) {
 });
 
 
-app.get('/api/account', function (req, res) {
+router.get('/account', function (req, res) {
     console.log(req.cookies)
     if (req.cookies && req.cookies.token) {
         jwt.verify(req.cookies.token, "abc12345678", (err, decoded) => {
@@ -92,7 +87,7 @@ app.get('/api/account', function (req, res) {
     }
 })
 
-app.post('/api/account', (req, res) => {
+router.post('/account', (req, res) => {
     const loginId = req.body.lId;
     const loginPw = req.body.lPw;
 
@@ -133,7 +128,7 @@ app.post('/api/account', (req, res) => {
 
 })
 
-app.get('/api/account', function (req, res) {
+router.get('/account', function (req, res) {
     console.log(req.cookies)
     if (req.cookies && req.cookies.token) {
         jwt.verify(req.cookies.token, "abc12345678", (err, decoded) => {
@@ -148,7 +143,7 @@ app.get('/api/account', function (req, res) {
     }
 })
 
-app.post('/api/chat', function (req, res){
+router.post('/chat', function (req, res){
     const mid = req.body.my_id;
     console.log(mid);
     db.collection('chat').find({}).toArray(function (err, result) {
@@ -159,7 +154,7 @@ app.post('/api/chat', function (req, res){
     })
 })
 
-app.post('/api/message', function(req, res){
+router.post('/message', function(req, res){
     var data ={
         parent: req.body.parent,
         content: req.body.content,
@@ -174,7 +169,7 @@ app.post('/api/message', function(req, res){
     })
 })
 
-app.get('/api/message/:id', function(req, res){
+router.get('/message/:id', function(req, res){
     res.writeHead(200, {
         "Connection" : "Keep-alive",
         "Content-Type" : "text/event-stream",
