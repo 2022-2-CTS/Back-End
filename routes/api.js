@@ -142,7 +142,10 @@ async function getConcertdata() {
   var config = {
     method: 'get',
     url: 'http://apis.data.go.kr/6260000/BusanCultureConcertDetailService/getBusanCultureConcertDetail?serviceKey=' + key + '&numOfRows=' + listC + '&resultType=json',
-    headers: {}
+    headers: {
+      'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
+      "Accept-Encoding": "deflate, br"
+    },
   };
   axios(config)
     .then(await function (response) {
@@ -187,7 +190,10 @@ async function getMusicaldata() {
   var config = {
     method: 'get',
     url: 'http://apis.data.go.kr/6260000/BusanCultureMusicalDetailService/getBusanCultureMusicalDetail?serviceKey=' + key + '&numOfRows=' + listM + '&resultType=json',
-    headers: {},
+    headers: {
+      'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
+      "Accept-Encoding": "deflate, br"
+    },
   };
   axios(config)
     .then(await function (response) {
@@ -232,7 +238,10 @@ async function getExhibitdata() {
   var config = {
     method: 'get',
     url: 'http://apis.data.go.kr/6260000/BusanCultureExhibitDetailService/getBusanCultureExhibitDetail?serviceKey=' + key + '&numOfRows=' + listE + '&resultType=json',
-    headers: {},
+    headers: {
+      'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
+      "Accept-Encoding": "deflate, br"
+    },
   };
   axios(config)
     .then(await function (response) {
