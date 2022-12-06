@@ -3,22 +3,11 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 var bodyParser = require('body-parser')
 var router = express.Router();
-var iconv = require('iconv-lite');
 
 app.use(bodyParser.json())
 
-const cors = require("cors");
-const { application } = require('express');
-
-const cheerio = require('cheerio');
-const puppeteer = require('puppeteer');
 const fs = require('fs');
 
-
-// const options = {useUnifiedTopology: true}; 
-// MongoDB 연결
-const MongoClient = require('mongodb').MongoClient;
-const request = require('request');
 //부산 공공 데이터 포털
 //연극
 var Playdata = [];
@@ -32,43 +21,6 @@ var listC;
 var listM;
 var listE;
 
-async function crawl(tmpUrl, nowData) {
-  const browser = await puppeteer.launch({ headless: true });
-  const page = await browser.newPage();
-  await page.setDefaultNavigationTimeout(0);
-
-  // headless: false일때 브라우저 크기 지정해주는 코드
-  await page.setViewport({
-      width: 1920,
-      height: 1080
-  });
-
-  await page.setDefaultNavigationTimeout(0);
-
-  await page.goto(tmpUrl);
-
-  // 이미지 요소 찾기
-  var content = await page.content();
-  var $ = cheerio.load(content);
-  
-  // 이미지 링크
-  var result_image = $('#subcontent > div > div.top.boxing > div.leftbox.img.relative > img');
-  var result_image_src = result_image['0']['attribs']['src'];
-  tmpData.data.img = result_image_src;
-  
-  await page.click('#subcontent > div > div.bottom > ul > li:nth-child(2)');
-  
-  // 주소 요소 찾기
-  content = await page.content();
-  $ = cheerio.load(content);
-
-  // 주소 텍스트
-  var result_address = $('#tab2 > div.subcont-bg > div > div.boardBasic.mb_scroll > div > table > tbody > tr > td:nth-child(5)').text();
-  tmpData.data.location = result_address;
-
-  console.log("<현재 완성된 데이터>");
-  console.log(tmpData);
-}
 
 //연극 데이터
 //total받기
@@ -119,7 +71,7 @@ async function getplaydata() {
       }
       //console.log(Playdata, "데이터")
       Playdata = JSON.stringify(Playdata);
-      fs.writeFileSync('play_json.json', Playdata);
+      fs.writeFileSync('../json/play_json.json', Playdata);
     })
 
 }
@@ -167,7 +119,7 @@ async function getConcertdata() {
         Concertdata.push(tmpData);
       }
       Concertdata = JSON.stringify(Concertdata);
-      fs.writeFileSync('concert_json.json', Concertdata);
+      fs.writeFileSync('../json/concert_json.json', Concertdata);
     })
 }
 
@@ -216,7 +168,7 @@ async function getMusicaldata() {
         Musicaldata.push(tmpData);
       }
       Musicaldata = JSON.stringify(Musicaldata);
-      fs.writeFileSync('musical_json.json', Musicaldata);
+      fs.writeFileSync('../json/musical_json.json', Musicaldata);
     })
 }
 
@@ -267,7 +219,7 @@ async function getExhibitdata() {
         Exhibitdata.push(tmpData);
       }
       Exhibitdata = JSON.stringify(Exhibitdata);
-      fs.writeFileSync('exhibit_json.json', Exhibitdata);
+      fs.writeFileSync('../json/exhibit_json.json', Exhibitdata);
     })
 }
 
@@ -275,14 +227,6 @@ getExhibit();
 getConcert();
 getMusical();
 getPlay();
-
-// DB connection URL
-// admin, cts1234
-// mongodb+srv://디비계정아이디:디비계정패스워드@cluster0-qaxa3.mongodb.net/데이터베이스이름?retryWrites=true&w=majority
-var URL = 'mongodb+srv://admin:cts1234@cts.1xmwczv.mongodb.net/?retryWrites=true&w=majority'
-
-// 어떤 데이터베이스에 저장할 것인가?
-var db;
 
 /*
 router.get('/play', function (get, res) {
@@ -299,14 +243,6 @@ router.get('/play', function (get, res) {
 //   res.send(Exhibitdata);
 // });
 */
-
-// error : 에러 발생 시, 어떤 에러인지 알려줌
-MongoClient.connect(URL, function (error, client) {
-  // error 출력
-  if (error) return console.log(error);
-  // BusanCultureMap 이라는 데이터베이스(폴더)에 접근할게요!
-  db = client.db('BusanCultureMap');
-});
 
 console.log("api");
 
