@@ -12,6 +12,7 @@ const { application } = require('express');
 
 const cheerio = require('cheerio');
 const puppeteer = require('puppeteer');
+const fs = require('fs');
 
 
 // const options = {useUnifiedTopology: true}; 
@@ -65,14 +66,14 @@ async function crawl(tmpUrl, nowData) {
   var result_address = $('#tab2 > div.subcont-bg > div > div.boardBasic.mb_scroll > div > table > tbody > tr > td:nth-child(5)').text();
   tmpData.data.location = result_address;
 
-  //console.log("<현재 완성된 데이터>");
-  //console.log(tmpData);
+  console.log("<현재 완성된 데이터>");
+  console.log(tmpData);
 }
 
 //연극 데이터
 //total받기
 async function getPlay() {
-  //console.log("gettotal")
+  console.log("gettotal play")
   var config = {
     method: 'get',
     url: 'http://apis.data.go.kr/6260000/BusanCulturePlayDetailService/getBusanCulturePlayDetail?serviceKey=' + key + '&resultType=json',
@@ -88,7 +89,7 @@ async function getPlay() {
 }
 
 async function getplaydata() {
-  await console.log(listP);
+  await console.log("연극 개수 : " + listP);
   var config = {
     method: 'get',
     url: 'http://apis.data.go.kr/6260000/BusanCulturePlayDetailService/getBusanCulturePlayDetail?serviceKey=' +key+'&resultType=json' + '&numOfRows=' + listP,
@@ -100,8 +101,6 @@ async function getplaydata() {
   axios(config)
     .then(await function (response) {
       var xmlToJson = response.data.getBusanCulturePlayDetail;
-      //console.log(response);
-      // console.log(listP)
       for (var i = 0; i < listP; i++) {
         //console.log("size: " + Playdata.length)
         const tmpData = {
@@ -119,12 +118,14 @@ async function getplaydata() {
         // crawl(tmpData.url, tmpData);
       }
       //console.log(Playdata, "데이터")
+      Playdata = JSON.stringify(Playdata);
+      fs.writeFileSync('play_json.json', Playdata);
     })
 
 }
 
 async function getConcert() {
-  //console.log("gettotal")
+  console.log("gettotal concert")
   var config = {
     method: 'get',
     url: 'http://apis.data.go.kr/6260000/BusanCultureConcertDetailService/getBusanCultureConcertDetail?serviceKey=' + key + '&resultType=json',
@@ -138,7 +139,7 @@ async function getConcert() {
     })
 }
 async function getConcertdata() {
-  await console.log("getset")
+  await console.log("콘서트 개수 : " + listC);
   var config = {
     method: 'get',
     url: 'http://apis.data.go.kr/6260000/BusanCultureConcertDetailService/getBusanCultureConcertDetail?serviceKey=' + key + '&numOfRows=' + listC + '&resultType=json',
@@ -165,12 +166,13 @@ async function getConcertdata() {
         }
         Concertdata.push(tmpData);
       }
-      //console.log(Concertdata, "데이터")
+      Concertdata = JSON.stringify(Concertdata);
+      fs.writeFileSync('concert_json.json', Concertdata);
     })
 }
 
 async function getMusical() {
-  console.log("gettotal")
+  console.log("gettotal musical")
   var config = {
     method: 'get',
     url: 'http://apis.data.go.kr/6260000/BusanCultureMusicalDetailService/getBusanCultureMusicalDetail?serviceKey=' + key + '&resultType=json',
@@ -186,7 +188,7 @@ async function getMusical() {
     })
 }
 async function getMusicaldata() {
-  await console.log("getset")
+  await console.log("뮤지컬 개수 : " + listM);
   var config = {
     method: 'get',
     url: 'http://apis.data.go.kr/6260000/BusanCultureMusicalDetailService/getBusanCultureMusicalDetail?serviceKey=' + key + '&numOfRows=' + listM + '&resultType=json',
@@ -213,12 +215,13 @@ async function getMusicaldata() {
         }
         Musicaldata.push(tmpData);
       }
-      //console.log(Musicaldata, "데이터")
+      Musicaldata = JSON.stringify(Musicaldata);
+      fs.writeFileSync('musical_json.json', Musicaldata);
     })
 }
 
 async function getExhibit() {
-  console.log("gettotal")
+  console.log("gettotal exhibit")
   var config = {
     method: 'get',
     url: 'http://apis.data.go.kr/6260000/BusanCultureExhibitDetailService/getBusanCultureExhibitDetail?serviceKey=' + key + '&resultType=json',
@@ -234,7 +237,7 @@ async function getExhibit() {
     })
 }
 async function getExhibitdata() {
-  await console.log("getset")
+  await console.log("전시 개수 : " + listE);
   var config = {
     method: 'get',
     url: 'http://apis.data.go.kr/6260000/BusanCultureExhibitDetailService/getBusanCultureExhibitDetail?serviceKey=' + key + '&numOfRows=' + listE + '&resultType=json',
@@ -245,7 +248,7 @@ async function getExhibitdata() {
   };
   axios(config)
     .then(await function (response) {
-      console.log(response)
+      //console.log(response)
       var xmlToJson = response.data.getBusanCultureExhibitDetail;
       // console.log(response);
       // console.log(xmlToJson.item)
@@ -262,18 +265,16 @@ async function getExhibitdata() {
           }
         }
         Exhibitdata.push(tmpData);
-        //console.log(i + "번째 데이터 크롤링");
-        //crawl(tmpData.url, tmpData);
       }
-      //console.log(Exhibitdata, "데이터")
+      Exhibitdata = JSON.stringify(Exhibitdata);
+      fs.writeFileSync('exhibit_json.json', Exhibitdata);
     })
 }
 
 getExhibit();
-//getConcert()
-//getMusical()
-//getPlay()
-
+getConcert();
+getMusical();
+getPlay();
 
 // DB connection URL
 // admin, cts1234

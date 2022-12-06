@@ -7,8 +7,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 var serverRouter = require('./routes/server');
-var apiRouter = require('./routes/api');
-var imageCrawlRouter = require('./routes/imageCrawl');
+//var apiRouter = require('./routes/api');
 var postRouter = require('./routes/post');
 
 var app = express();
@@ -24,6 +23,6 @@ app.use('/users', usersRouter);
 
 app.use('/api', serverRouter); // 회원가입, 로그인
 app.use('/api/board', postRouter); // info 작성
-app.use('/api/data', apiRouter); // 공공데이터포털 api 호출
+//app.use('/api/data', apiRouter); // 공공데이터포털 api 호출
 
 module.exports = app;
