@@ -12,6 +12,10 @@ app.use(bodyParser.json())
 const cors = require("cors");
 const { application } = require('express');
 
+// const http = require('http').createServer(app);
+// const { Server } = require('socket.io');
+// const io = new Server(http);
+
 const registers = [
     {}
 ]
@@ -183,4 +187,5 @@ router.get('/message/:id', function(req, res){
         console.log(JSON.stringify(result))
     })
 })
+
 module.exports = router;
