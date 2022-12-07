@@ -22,6 +22,7 @@ app.set('port', port);
 var server = http.createServer(app);
 
 const { Server } = require("socket.io");
+const { ConnectionClosedEvent } = require('mongodb');
 const io = new Server(server, {
   cors: {
     origin: 'http://localhost:8080',
@@ -32,14 +33,32 @@ const io = new Server(server, {
   allowEIO3: true
 });
 
+var chatRoomId;
+
+app.post('/api/chatroom', function (req, res){
+  console.log('post된 데이터에요!!' + req.body.title_);
+  chatRoomId = req.body.title_;
+})
+
+
 io.on('connection', (socket) => {
   console.log('a user connected');
   io.emit('connection');
-  console.log(socket.id);
+  //console.log(socket.id);
 
-  socket.on('chat message', (msg) => {
+  var title = "";
+  //console.log('title = '+ socket.title);
+
+  socket.on(chatRoomId , function(data){
+    socket.join(chatRoomId);
+    console.log('조인했어요~~!!');
+  })
+  //console.log(title);
+
+  socket.on(chatRoomId, (msg) => {
     console.log('message: ' + msg);
-    io.emit('broadcast message', msg);
+    //console.log(title);
+    io.to(chatRoomId).emit('broadcast message', msg);
   });
 });
 
