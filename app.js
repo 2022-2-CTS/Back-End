@@ -10,6 +10,7 @@ var serverRouter = require('./routes/server');
 //var apiRouter = require('./routes/api');
 var postRouter = require('./routes/post');
 var getDataRouter = require('./routes/getData');
+var togetherRouter = require('./routes/together');
 
 var app = express();
 
@@ -24,6 +25,7 @@ app.use('/users', usersRouter);
 
 app.use('/api', serverRouter); // 회원가입, 로그인
 app.use('/api/board', postRouter); // info 작성
+app.use('/api/together', togetherRouter); // 같이고고 작성
 //app.use('/api/data', apiRouter); // 공공데이터포털 api 호출
 app.use('/api/data', getDataRouter); // data 받아오기
 
