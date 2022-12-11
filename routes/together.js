@@ -37,12 +37,13 @@ MongoClient.connect(URL, function (error, client) {
 
 // 제목, 태그(0~3), 내용을 post collention에 저장함
 router.post("/upload", function (req, res) {
+    var tmpId = req.body.userId;
     var tmpTitle = req.body.title;
     var tmpTag = req.body.tag;
     var tmpContent = req.body.content;
 
     console.log(req.body);
-    db.collection('together').insertOne({ title: tmpTitle, tag: tmpTag, content: tmpContent }, function (error, result) {
+    db.collection('together').insertOne({ userId: tmpId, title: tmpTitle, tag: tmpTag, content: tmpContent }, function (error, result) {
         console.log('저장 완료');
     });
 })
