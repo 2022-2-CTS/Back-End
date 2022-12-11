@@ -158,12 +158,27 @@ router.post('/chat', function (req, res){
     })
 })
 
+router.post('/makechat', function(req, res){
+    var data = {
+        yid : req.body.yid,
+        mid : req.body.mid,
+        date: new Date(),
+    }
+    console.log(data.yid);
+    db.collection('chat').insertOne(data).then(() => {
+        console.log("채팅방이 개설됐어요!!");
+        res.send("채팅방이 개설됐어요!!");
+    }).catch(() => {
+        res.send("채팅방 개설에 실패했어요.. ㅜㅜ")
+    })
+})
+
 router.post('/message', function(req, res){
     var data ={
         parent: req.body.parent,
         content: req.body.content,
         userid: req.body.userid,
-        data: new Date(),
+        date: new Date(),
     }
     db.collection('message').insertOne(data).then(() => {
         console.log("성공");
