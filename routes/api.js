@@ -223,10 +223,10 @@ async function getExhibitdata() {
     })
 }
 
-getExhibit();
-getConcert();
-getMusical();
-getPlay();
+// getExhibit();
+// getConcert();
+// getMusical();
+// getPlay();
 
 /*
 router.get('/play', function (get, res) {

@@ -32,20 +32,8 @@ var test_URL = 'http://busandabom.net/play/view.nm?lang=ko&url=play&menuCd=8&res
 
 var tmpData;
 
-// const options = {useUnifiedTopology: true}; 
-// MongoDB 연결
-const MongoClient = require('mongodb').MongoClient;
-
-// DB connection URL
-// admin, cts1234
-// mongodb+srv://디비계정아이디:디비계정패스워드@cluster0-qaxa3.mongodb.net/데이터베이스이름?retryWrites=true&w=majority
-var URL = 'mongodb+srv://admin:cts1234@cts.1xmwczv.mongodb.net/?retryWrites=true&w=majority'
-
-// 어떤 데이터베이스에 저장할 것인가?
-var db;
-
 async function crawl(nowData) {
-    const browser = await puppeteer.launch({ headless: false });
+    const browser = await puppeteer.launch({ headless: true });
     const page = await browser.newPage();
     await page.setDefaultNavigationTimeout(0);
 
@@ -256,47 +244,16 @@ async function crawlExhibit() {
 }
 
 async function callCrawl() {
-    //awlPlay();
-    //console.log(">>> play 저장 끝");
-    //crawlConcert();
-    //console.log(">>> Concert 저장 끝");
-    //crawlMusical();
-    //console.log(">>> Musical 저장 끝");
-    crawlExhibit();
-    //console.log(">>> Exhibit 저장 끝");
+    // await crawlPlay();
+    // await console.log(">>> play 저장 끝");
+    // await crawlConcert();
+    // await console.log(">>> Concert 저장 끝");
+    // await crawlMusical();
+    // await console.log(">>> Musical 저장 끝");
+    await crawlExhibit();
+    await console.log(">>> Exhibit 저장 끝");
 }
 
-//callCrawl();
-//crawl(PlayJSON[0])
-
-async function insertDB() {
-    // error : 에러 발생 시, 어떤 에러인지 알려줌
-    MongoClient.connect(URL, function (error, client) {
-        // error 출력
-        if (error) return console.log(error);
-        // BusanCultureMap 이라는 데이터베이스(폴더)에 접근할게요!
-        db = client.db('BusanCultureMap');
-
-        //db.collection('play').insertMany(PlayRealJSON);
-
-        PlayRealJSON = fs.readFileSync('../json/play_real_json.json');
-        ConcertRealJSON = fs.readFileSync('../json/concert_real_json.json');
-        MusicalRealJSON = fs.readFileSync('../json/musical_real_json.json');
-        ExhibitRealJSON = fs.readFileSync('../json/exhibit_real_json.json');
-
-        PlayRealJSON = JSON.parse(PlayRealJSON);
-        ConcertRealJSON = JSON.parse(ConcertRealJSON);
-        MusicalRealJSON = JSON.parse(MusicalRealJSON);
-        ExhibitRealJSON = JSON.parse(ExhibitRealJSON);
-
-        db.collection('play').insertMany(PlayRealJSON);
-        db.collection('concert').insertMany(ConcertRealJSON);
-        db.collection('musical').insertMany(MusicalRealJSON);
-        db.collection('exhibit').insertMany(ExhibitRealJSON);
-    });
-}
-
-// 이거 실행하지 마세요...
-//insertDB();
+callCrawl();
 
 module.exports = router;
